@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15,7 +15,7 @@ class TestOne {
         alert("起始化one");
     };
 
-    BindFunction(id) {
+    BindFunction(id, self) {
         $(`#${id} #test`).on('click', ClickFunct);
     };
 }

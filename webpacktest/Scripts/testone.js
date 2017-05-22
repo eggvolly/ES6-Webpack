@@ -8,7 +8,7 @@ export default class TestOne {
         alert("起始化one");
     };
 
-    BindFunction(id) {
+    BindFunction(id, self) {
         $(`#${id} #test`).on('click', ClickFunct);
     };
 };

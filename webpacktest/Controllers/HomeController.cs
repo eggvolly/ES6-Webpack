@@ -17,5 +17,15 @@ namespace webpacktest.Controllers
         {
             return PartialView();
         }
+
+        public void Save(string name, int phone)
+        {
+            if(String.IsNullOrEmpty(name))
+            {
+                return;
+            }
+
+            return;
+        }
     }
 }

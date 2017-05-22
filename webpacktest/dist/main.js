@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		3: 0
+/******/ 		2: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -188,30 +188,6 @@ function OpenTab() {
 var mapJS = new Map();
 var mapStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
 
-function RequireGO() {
-    __webpack_require__.e/* require.ensure */(2).then((function () {
-        let te = __webpack_require__(2).default;
-
-        // 此時 callback 內容所呼叫的模組 (此為 './feed') 已可以被同步呼叫
-
-        let getjs = new te();
-        getjs.bar();
-        console.log(getjs.GetT());
-        console.log(tmpdata);
-        mapJS.set('tab1', getjs);
-        tmpdata++;
-
-    }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-};
-
-function ShowTValue() {
-
-    let tabjs = mapJS.get('tab1');
-    tabjs.Changet('kkk');
-    console.log(tabjs.GetT());
-}
-
-
 function GetFunctionPanel(e) {
 
     const url = $(e).data('url');
@@ -230,8 +206,6 @@ function GetFunctionPanel(e) {
         url: url,
         success: function (result) {
             // 1. 載入頁面，設定class為active
-            // 2. 載入JS，並做起始化及功能綁定
-            // 3. mapStatus調整
             HideTab();
             $('#innercontent').append(`<div id=${tabId} class='active'>${result}</div>`);
             var tabBtn = document.createElement('button');
@@ -239,7 +213,7 @@ function GetFunctionPanel(e) {
             tabBtn.className = 'btn btn-default';
             tabBtn.id = tabId;
             tabBtn.addEventListener('click', function () {
-                var tab = $(`#${tabId}`);
+                var tab = $(`#innercontent #${tabId}`);
                 HideTab();
                 tab.addClass('active');
             });
@@ -247,11 +221,13 @@ function GetFunctionPanel(e) {
 
             $('#CloseTab').show();
 
+             // 2. 載入JS，並做起始化及功能綁定
             GetJsClass(tabId, jsId).then(function () {
                 let tmp = mapJS.get(tabId);
                 tmp.Initialize();
-                tmp.BindFunction(tabId);
+                tmp.BindFunction(tabId, tmp);
 
+                // 3. mapStatus調整
                 SetTrueForMapStatus(tabId);
             })
         },
@@ -295,7 +271,7 @@ function GetJsClass(tabId, jsName) {
         switch (jsName) {
             case 'Home':
                 __webpack_require__.e/* require.ensure */(1).then((function () {
-                    tmpJS = __webpack_require__(3).default;
+                    tmpJS = __webpack_require__(2).default;
                     getjs = new tmpJS();
                     mapJS.set(tabId, getjs);
 
@@ -304,7 +280,7 @@ function GetJsClass(tabId, jsName) {
                 break;
             case 'TestOne':
                 __webpack_require__.e/* require.ensure */(0).then((function () {
-                    tmpJS = __webpack_require__(4).default;
+                    tmpJS = __webpack_require__(3).default;
                     getjs = new tmpJS();
                     mapJS.set(tabId, getjs);
 

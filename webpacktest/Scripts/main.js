@@ -60,7 +60,7 @@ function GetFunctionPanel(e) {
             tabBtn.className = 'btn btn-default';
             tabBtn.id = tabId;
             tabBtn.addEventListener('click', function () {
-                var tab = $(`#${tabId}`);
+                var tab = $(`#innercontent #${tabId}`);
                 HideTab();
                 tab.addClass('active');
             });
@@ -72,7 +72,7 @@ function GetFunctionPanel(e) {
             GetJsClass(tabId, jsId).then(function () {
                 let tmp = mapJS.get(tabId);
                 tmp.Initialize();
-                tmp.BindFunction(tabId);
+                tmp.BindFunction(tabId, tmp);
 
                 // 3. mapStatus調整
                 SetTrueForMapStatus(tabId);
