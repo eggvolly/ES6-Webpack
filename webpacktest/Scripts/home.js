@@ -2,21 +2,16 @@
 
 class Home {
     constructor() {
-        this.mapData = new Map();
+        this.model = new Map();
     };
 
     Initialize() {
     };
 
-    BindFunction(id, self) {
-        $(`#${id} #toolbar #Add`).on('click', function () {
-            console.log(id + "  add");
-            const name = 'Ray';
-            const phone = Math.floor(Math.random() * 1000);
+    BindEvent(id, self, opentab) {
 
-            let data = new HomeData(name, phone);
-            self.mapData.set('Add', data);
-            toolbar.ChangeState('Add', true);
+        $(`#${id} #toolbar #Add`).on('click', function () {
+            AddData(id, self);
         });
 
         $(`#${id} #toolbar #Search`).on('click', function () {
@@ -24,34 +19,24 @@ class Home {
         })
 
         $(`#${id} #save`).on('click', function () {
-            console.log(id);
-            for (let item of self.mapData.entries()) {
-                if (item[0] == 'Add') {
-                    const name = item[1].name;
-                    const phone = item[1].phone;
+            SaveData(self);
+        })
 
-                    $.ajax({
-                        type: 'post',
-                        data: {
-                            name: name,
-                            phone: phone
-                        },
-                        url: '/Home/Save',
-                        success: function () {
-                            alert("success");
-                            toolbar.ChangeState('Add', false);
-                        },
-                        error: function () {
-                            alert("failed");
-                        }
-                    })
-                }
-            }
+        $(`#${id} #addtab`).on('click', function () {
+            opentab('/TestOne/Index', '測試一號', 'TestOne');
         })
     };
 
-
 };
+
+function AddData(id, self) {
+    const name = 'Ray';
+    const phone = Math.floor(Math.random() * 1000);
+
+    let data = new HomeData(name, phone);
+    self.model.set('Add', data);
+    toolbar.ChangeState('Add', true);
+}
 
 
 function GetList(id) {
@@ -69,6 +54,33 @@ function GetList(id) {
 }
 
 
+function SaveData(self) {
+    for (let item of self.model.entries()) {
+        if (item[0] == 'Add') {
+            const name = item[1].name;
+            const phone = item[1].phone;
+
+            $.ajax({
+                type: 'post',
+                data: {
+                    name: name,
+                    phone: phone
+                },
+                url: '/Home/Save',
+                success: function () {
+                    alert("success");
+                    toolbar.ChangeState('Add', false);
+                },
+                error: function () {
+                    alert("failed");
+                }
+            })
+        }
+    }
+}
+
+
+
 class HomeData {
     constructor(name, phone) {
         this.name = name;
@@ -77,3 +89,4 @@ class HomeData {
 }
 
 export default Home;
+export { OpenFunction };

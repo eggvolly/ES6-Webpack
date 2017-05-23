@@ -15,7 +15,7 @@ class TestOne {
         alert("起始化one");
     };
 
-    BindFunction(id, self) {
+    BindEvent(id, self, opentab) {
         $(`#${id} #test`).on('click', ClickFunct);
     };
 }
