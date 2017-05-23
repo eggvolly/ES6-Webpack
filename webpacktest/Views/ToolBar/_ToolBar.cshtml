@@ -1,0 +1,26 @@
+﻿@model webpacktest.ViewModel.ToolBarViewModel
+
+<div id="toolbar">
+    <nav>
+        <ul class="list-inline">
+            <li style="padding:0px">
+                <button class="btn btn-warning" id="Search" disabled="@(Model.DisSearch ?? false)" data-userstate="@(Model.DisSearch ?? false)" data-url="@Url.Action("Search",Model.ControllerName)" data-display="searchpanel">查詢</button>
+            </li><!--
+            --><li style="padding:0px">
+                <button class="btn btn-danger" id="Add" disabled="@(Model.DisNew ?? false)" data-userstate="@(Model.DisNew ?? false)" data-url="@Url.Action("Add",Model.ControllerName)" data-display="display">新增</button>
+            </li><!--
+            --><li style="padding:0px">
+                <button class="btn btn-default" id="Check" disabled="@(Model.DisCheck ?? false)" data-userstate="@(Model.DisCheck ?? false)">確認</button>
+            </li><!--
+            --><li style="padding:0px">
+                <button class="btn btn-info" id="Delete" disabled="@(Model.DisDelete ?? false)" data-userstate="@(Model.DisDelete ?? false)" data-url="@Url.Action("Delete",Model.ControllerName)">刪除</button>
+            </li><!--
+            --><li style="padding:0px">
+                <button class="btn btn-success" id="Failed" disabled="@(Model.DisFailed ?? false)" data-userstate="@(Model.DisFailed ?? false)">作廢</button>
+            </li><!--
+            --><li style="padding:0px">
+                <button class="btn btn-primary" id="Attachment" disabled="@(Model.DisAttach ?? false)" onclick="AttachmentFunct()" data-userstate="@(Model.DisAttach ?? false)">附件</button>
+            </li>
+        </ul>
+    </nav>
+</div>

@@ -157,6 +157,7 @@ $('.navbar-nav li label').on('click', function (event) {
 });
 
 $('#CloseTab').on('click', RemoveTab);
+
 function RemoveTab() {
     let tab = $('#innercontent .active');
     const tabid = tab.attr('Id');
@@ -174,7 +175,9 @@ function OpenTab() {
     let tab = $('#innercontent div').first();
 
     if (tab.length > 0) {
+        let id = tab.attr('Id');
         tab.addClass('active');
+        $(`#tabpanel #${id}`).addClass('active');
         return true;
     }
 
@@ -210,12 +213,14 @@ function GetFunctionPanel(e) {
             $('#innercontent').append(`<div id=${tabId} class='active'>${result}</div>`);
             var tabBtn = document.createElement('button');
             tabBtn.textContent = title;
-            tabBtn.className = 'btn btn-default';
+            tabBtn.className = 'btn btn-default active';
             tabBtn.id = tabId;
             tabBtn.addEventListener('click', function () {
                 var tab = $(`#innercontent #${tabId}`);
                 HideTab();
                 tab.addClass('active');
+                var tabBtn = $(`#tabpanel #${tabId}`);
+                tabBtn.addClass('active');
             });
             document.getElementById('tabpanel').appendChild(tabBtn);
 
@@ -238,7 +243,10 @@ function GetFunctionPanel(e) {
 };
 
 function HideTab() {
-    $('#innercontent div').each(function () {
+    $('#innercontent > div').each(function () {
+        $(this).removeClass('active');
+    });
+    $('#tabpanel > button').each(function () {
         $(this).removeClass('active');
     })
 }
@@ -265,12 +273,11 @@ function FindUnuseTab() {
 //取得JS並更新mapJS
 function GetJsClass(tabId, jsName) {
     const promise = new Promise(function (resolve, reject) {
-        console.log(jsName);
         let tmpJS;
         let getjs;
         switch (jsName) {
             case 'Home':
-                __webpack_require__.e/* require.ensure */(1).then((function () {
+                __webpack_require__.e/* require.ensure */(0).then((function () {
                     tmpJS = __webpack_require__(2).default;
                     getjs = new tmpJS();
                     mapJS.set(tabId, getjs);
@@ -279,7 +286,7 @@ function GetJsClass(tabId, jsName) {
                 }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
                 break;
             case 'TestOne':
-                __webpack_require__.e/* require.ensure */(0).then((function () {
+                __webpack_require__.e/* require.ensure */(1).then((function () {
                     tmpJS = __webpack_require__(3).default;
                     getjs = new tmpJS();
                     mapJS.set(tabId, getjs);

@@ -1,0 +1,21 @@
+﻿@model List<webpacktest.ViewModel.HomeDataViewModel>
+
+<div>
+    <table class="table table-striped">
+        <tr>
+            <th style="width:40%">
+                姓名
+            </th>
+            <th style="width:60%">
+                電話
+            </th>
+        </tr>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Phone</td>
+            </tr>
+        }
+    </table>
+</div>
