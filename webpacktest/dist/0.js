@@ -6,13 +6,14 @@ webpackJsonp([0],[
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OpenFunction", function() { return OpenFunction; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar__ = __webpack_require__(4);
 ﻿
 
 class Home {
     constructor() {
         this.model = new Map();
+        this.searchUrl = '/Home/Search';
+        this.saveUrl = '/Home/Save';
     };
 
     Initialize() {
@@ -25,7 +26,7 @@ class Home {
         });
 
         $(`#${id} #toolbar #Search`).on('click', function () {
-            GetList(id);
+            GetList(id, self);
         })
 
         $(`#${id} #save`).on('click', function () {
@@ -49,11 +50,11 @@ function AddData(id, self) {
 }
 
 
-function GetList(id) {
+function GetList(id, self) {
 
     $.ajax({
         type: 'get',
-        url: '/Home/Search',
+        url: self.searchUrl,
         success: function (result) {
             $(`#innercontent #${id}`).html(result);
         },
@@ -76,7 +77,7 @@ function SaveData(self) {
                     name: name,
                     phone: phone
                 },
-                url: '/Home/Save',
+                url: self.saveUrl,
                 success: function () {
                     alert("success");
                     __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */]('Add', false);
@@ -98,8 +99,8 @@ class HomeData {
     };
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Home);
 
+/* harmony default export */ __webpack_exports__["default"] = (Home);
 
 /***/ }),
 /* 3 */,

@@ -3,6 +3,8 @@
 class Home {
     constructor() {
         this.model = new Map();
+        this.searchUrl = '/Home/Search';
+        this.saveUrl = '/Home/Save';
     };
 
     Initialize() {
@@ -15,7 +17,7 @@ class Home {
         });
 
         $(`#${id} #toolbar #Search`).on('click', function () {
-            GetList(id);
+            GetList(id, self);
         })
 
         $(`#${id} #save`).on('click', function () {
@@ -39,11 +41,11 @@ function AddData(id, self) {
 }
 
 
-function GetList(id) {
+function GetList(id, self) {
 
     $.ajax({
         type: 'get',
-        url: '/Home/Search',
+        url: self.searchUrl,
         success: function (result) {
             $(`#innercontent #${id}`).html(result);
         },
@@ -66,7 +68,7 @@ function SaveData(self) {
                     name: name,
                     phone: phone
                 },
-                url: '/Home/Save',
+                url: self.saveUrl,
                 success: function () {
                     alert("success");
                     toolbar.ChangeState('Add', false);
@@ -88,5 +90,5 @@ class HomeData {
     };
 }
 
+
 export default Home;
-export { OpenFunction };

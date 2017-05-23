@@ -151,27 +151,35 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-﻿
+﻿var mapJSClass = new Map();
+var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
+
+
 $('.navbar-nav li label').on('click', function (event) {
     GetFunctionPanel(this);
 });
 
-$('#CloseTab').on('click', RemoveTab);
 
-function RemoveTab() {
+$('#CloseTab').on('click', RemoveFunctionTab);
+
+
+//關閉(刪除)功能頁籤
+function RemoveFunctionTab() {
     let tab = $('#innercontent .active');
     const tabid = tab.attr('Id');
     let tabBtn = $(`#functiontab_panel #${tabid}`);
     SetFalseForMapStatus(tabid);
     tab.remove();
     tabBtn.remove();
-    let isOpen = OpenTab();
+    let isOpen = SwitchFunctionTab();
     if (!isOpen) {
         $('#CloseTab').hide();
     }
 };
 
-function OpenTab() {
+
+//切換已存在的功能頁籤
+function SwitchFunctionTab() {
     let tab = $('#innercontent div').first();
 
     if (tab.length > 0) {
@@ -185,13 +193,7 @@ function OpenTab() {
 };
 
 
-/**
- * 以上為共用的部分
- */
-var mapJS = new Map();
-var mapStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
-
-
+//開啟新的功能頁籤
 function GetFunctionPanel(e) {
 
     const url = $(e).data('url');
@@ -202,6 +204,7 @@ function GetFunctionPanel(e) {
 };
 
 
+//開啟新的功能頁籤
 function OpenNewTab(url, title, jsId) {
     const tabId = FindUnuseTab();
 
@@ -215,9 +218,8 @@ function OpenNewTab(url, title, jsId) {
         url: url,
         success: function (result) {
             // 1. 載入頁面，設定class為active
-            HideTab();
+            HideFunctionTab();
 
-            //$('#innercontent').append(`<div id=${tabId} class='active'>${result}</div>`);
             var tabpanel = document.createElement('div');
             tabpanel.id = tabId;
             tabpanel.className = 'active';
@@ -229,11 +231,7 @@ function OpenNewTab(url, title, jsId) {
             tabBtn.className = 'btn btn-default active';
             tabBtn.id = tabId;
             tabBtn.addEventListener('click', function () {
-                var tab = $(`#innercontent #${tabId}`);
-                HideTab();
-                tab.addClass('active');
-                var tabBtn = $(`#functiontab_panel #${tabId}`);
-                tabBtn.addClass('active');
+                SwitchTab(tabId);
             });
             document.getElementById('functiontab_panel').appendChild(tabBtn);
 
@@ -241,11 +239,11 @@ function OpenNewTab(url, title, jsId) {
 
             // 2. 載入JS，並做起始化及功能綁定
             GetJsClass(tabId, jsId).then(function () {
-                let tmp = mapJS.get(tabId);
+                let tmp = mapJSClass.get(tabId);
                 tmp.Initialize();
                 tmp.BindEvent(tabId, tmp, OpenNewTab);
 
-                // 3. mapStatus調整
+                // 3. mapTabStatus調整
                 SetTrueForMapStatus(tabId);
             })
         },
@@ -256,7 +254,8 @@ function OpenNewTab(url, title, jsId) {
 }
 
 
-function HideTab() {
+//隱藏全部功能頁籤
+function HideFunctionTab() {
     $('#innercontent > div').each(function () {
         $(this).removeClass('active');
     });
@@ -268,13 +267,13 @@ function HideTab() {
 
 //取得未被使用的tab名稱
 function FindUnuseTab() {
-    if (mapStatus == null) {
+    if (mapTabStatus == null) {
         return;
     }
 
     let tabName = '';
 
-    for (let item of mapStatus.entries()) {
+    for (let item of mapTabStatus.entries()) {
         if (item[1] == false) {
             tabName = item[0];
             return tabName;
@@ -285,7 +284,7 @@ function FindUnuseTab() {
 }
 
 
-//取得JS並更新mapJS
+//取得JS並更新mapJSClass
 function GetJsClass(tabId, jsName) {
     const promise = new Promise(function (resolve, reject) {
         let tmpJS;
@@ -296,7 +295,7 @@ function GetJsClass(tabId, jsName) {
                 __webpack_require__.e/* require.ensure */(0).then((function () {
                     tmpJS = __webpack_require__(2).default;
                     getjs = new tmpJS();
-                    mapJS.set(tabId, getjs);
+                    mapJSClass.set(tabId, getjs);
 
                     resolve();
                 }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -305,7 +304,7 @@ function GetJsClass(tabId, jsName) {
                 __webpack_require__.e/* require.ensure */(1).then((function () {
                     tmpJS = __webpack_require__(3).default;
                     getjs = new tmpJS();
-                    mapJS.set(tabId, getjs);
+                    mapJSClass.set(tabId, getjs);
 
                     resolve();
                 }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -317,25 +316,34 @@ function GetJsClass(tabId, jsName) {
     });
 
     return promise;
+}
+
+
+function SwitchTab(tabId) {
+    var tab = $(`#innercontent #${tabId}`);
+    HideFunctionTab();
+    tab.addClass('active');
+    var tabBtn = $(`#functiontab_panel #${tabId}`);
+    tabBtn.addClass('active');
 };
 
 
 //設定mapStatus為true
 function SetTrueForMapStatus(key) {
-    if (mapStatus == null || !mapStatus.has(key)) {
+    if (mapTabStatus == null || !mapTabStatus.has(key)) {
         return;
     };
-    mapStatus.delete(key);
-    mapStatus.set(key, true);
+    mapTabStatus.delete(key);
+    mapTabStatus.set(key, true);
 }
 
 
 function SetFalseForMapStatus(key) {
-    if (mapStatus == null || !mapStatus.has(key)) {
+    if (mapTabStatus == null || !mapTabStatus.has(key)) {
         return;
     };
-    mapStatus.delete(key);
-    mapStatus.set(key, false);
+    mapTabStatus.delete(key);
+    mapTabStatus.set(key, false);
 }
 
 /***/ }),
