@@ -197,6 +197,7 @@
     <Content Include="Views\TestOne\Index.cshtml" />
     <Content Include="Views\ToolBar\_ToolBar.cshtml" />
     <Content Include="Views\Home\_List.cshtml" />
+    <Content Include="Views\Home\_Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

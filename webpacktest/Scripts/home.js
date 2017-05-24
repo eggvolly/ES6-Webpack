@@ -5,6 +5,7 @@ class Home {
         this.model = new Map();
         this.searchUrl = '/Home/Search';
         this.saveUrl = '/Home/Save';
+        this.deleteUrl = '/Home/Delete';
     };
 
     Initialize() {
@@ -18,14 +19,20 @@ class Home {
 
         $(`#${id} #toolbar #Search`).on('click', function () {
             GetList(id, self);
-        })
+        });
+
+        $(`#${id} #toolbar #Delete`).on('click', function () {
+            DeleteFunction(id, self);
+        });
 
         $(`#${id} #save`).on('click', function () {
             SaveData(self);
         })
 
         $(`#${id} #addtab`).on('click', function () {
+            $(this).attr('disabled', true);
             opentab('/TestOne/Index', '測試一號', 'TestOne');
+            $(this).attr('disabled', false);
         })
     };
 
@@ -79,6 +86,26 @@ function SaveData(self) {
             })
         }
     }
+}
+
+
+function DeleteFunction(id, self) {
+    $.ajax({
+        type: 'get',
+        url: self.deleteUrl,
+        success: function (result) {
+            let panel = $(`#${id} #myModal #searchpanel`);
+            panel.html(result);
+
+            $(`#${id} #myModal`).modal({
+                keyboard: false,
+                backdrop: false
+            }, 'show');
+        },
+        error: function () {
+            alert("System Error");
+        }
+    })
 }
 
 

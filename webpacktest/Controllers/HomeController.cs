@@ -50,5 +50,10 @@ namespace webpacktest.Controllers
 
             return;
         }
+
+        public ActionResult Delete()
+        {
+            return PartialView("_Delete");
+        }
     }
 }

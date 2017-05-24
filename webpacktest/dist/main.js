@@ -156,7 +156,9 @@ var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', f
 
 
 $('.navbar-nav li label').on('click', function (event) {
+    $(this).attr('disabled', true);
     GetFunctionPanel(this);
+    $(this).attr('disabled', false);
 });
 
 
