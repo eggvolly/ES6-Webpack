@@ -1,4 +1,5 @@
-﻿
+﻿import { Open } from './main'
+
 export default class TestOne {
     constructor() {
 
@@ -8,8 +9,12 @@ export default class TestOne {
         alert("起始化one");
     };
 
-    BindEvent(id, self, opentab) {
+    BindEvent(id, self) {
         $(`#${id} #test`).on('click', ClickFunct);
+
+        $(`#${id} #open`).on('click', function () {
+            Open('NewPage', $(this));
+        })
     };
 };
 

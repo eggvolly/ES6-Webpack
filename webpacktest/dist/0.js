@@ -1,13 +1,14 @@
-webpackJsonp([0],[
-/* 0 */,
-/* 1 */,
-/* 2 */
+webpackJsonp([0],{
+
+/***/ 3:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main__ = __webpack_require__(0);
 ﻿
+
 
 class Home {
     constructor() {
@@ -23,7 +24,7 @@ class Home {
         self.model.set('url', urlMap);
     };
 
-    BindEvent(id, self, opentab) {
+    BindEvent(id, self) {
 
         $(`#${id} #toolbar #Add`).on('click', function () {
             AddData(id, self);
@@ -43,7 +44,7 @@ class Home {
 
         $(`#${id} #addtab`).on('click', function () {
             $(this).attr('disabled', true);
-            opentab('/TestOne/Index', '測試一號', 'TestOne');
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__main__["Open"])('NewTab', $(this));
             $(this).attr('disabled', false);
         })
     };
@@ -51,9 +52,9 @@ class Home {
     InitialToolBar(self, actionmap) {
         
         for (let item of actionmap) {
-            const action = item[0].replace('Disable', '');
+            const action = item[0];
             if (item[1] == false) {
-                __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */](action, false);
+                __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */](action, false, null);
             }
         }
 
@@ -68,7 +69,8 @@ function AddData(id, self) {
 
     let data = new HomeData(name, phone);
     self.model.set('Add', data);
-    __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */]('Add', true);
+    const userState = self.model.get('toolbar').get('Add');
+    __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */]('Add', true, userState);
 }
 
 
@@ -108,7 +110,8 @@ function SaveData(self) {
                 url: url,
                 success: function () {
                     alert("success");
-                    __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */]('Add', false);
+                    const userState = self.model.get('toolbar').get('Add');
+                    __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */]('Add', false, userState);
                 },
                 error: function () {
                     alert("failed");
@@ -155,16 +158,16 @@ class HomeData {
 /* harmony default export */ __webpack_exports__["default"] = (Home);
 
 /***/ }),
-/* 3 */,
-/* 4 */
+
+/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChangeState; });
-﻿function ChangeState(action, status) {
+﻿function ChangeState(action, status, userState) {
     let btn = $('#functiontab_panel .active #toolbar #' + action);
 
-    if (action != null && $('#toolbar #Add').data('userstate') != 'True') {
+    if (action != null && userState == false || userState == null) {
         if (status == 'True' || status == 'true' || status == true) {
             btn.attr('disabled', true);
         }
@@ -180,4 +183,5 @@ class HomeData {
 
 
 /***/ })
-]);
+
+});

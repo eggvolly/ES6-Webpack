@@ -1,4 +1,5 @@
 ﻿import * as toolbar from './toolbar'
+import { Open } from './main'
 
 class Home {
     constructor() {
@@ -14,7 +15,7 @@ class Home {
         self.model.set('url', urlMap);
     };
 
-    BindEvent(id, self, opentab) {
+    BindEvent(id, self) {
 
         $(`#${id} #toolbar #Add`).on('click', function () {
             AddData(id, self);
@@ -34,7 +35,7 @@ class Home {
 
         $(`#${id} #addtab`).on('click', function () {
             $(this).attr('disabled', true);
-            opentab('/TestOne/Index', '測試一號', 'TestOne');
+            Open('NewTab', $(this));
             $(this).attr('disabled', false);
         })
     };
@@ -42,9 +43,9 @@ class Home {
     InitialToolBar(self, actionmap) {
         
         for (let item of actionmap) {
-            const action = item[0].replace('Disable', '');
+            const action = item[0];
             if (item[1] == false) {
-                toolbar.ChangeState(action, false);
+                toolbar.ChangeState(action, false, null);
             }
         }
 
@@ -59,7 +60,8 @@ function AddData(id, self) {
 
     let data = new HomeData(name, phone);
     self.model.set('Add', data);
-    toolbar.ChangeState('Add', true);
+    const userState = self.model.get('toolbar').get('Add');
+    toolbar.ChangeState('Add', true, userState);
 }
 
 
@@ -99,7 +101,8 @@ function SaveData(self) {
                 url: url,
                 success: function () {
                     alert("success");
-                    toolbar.ChangeState('Add', false);
+                    const userState = self.model.get('toolbar').get('Add');
+                    toolbar.ChangeState('Add', false, userState);
                 },
                 error: function () {
                     alert("failed");

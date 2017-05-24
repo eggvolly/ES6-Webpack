@@ -22,8 +22,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><label style="font-size:16px; color:white; cursor:pointer; margin-right:5px;" data-title="首頁" data-url="@Url.Action("Index","Home")" data-jsid="Home">首頁</label></li>
-                    <li><label style="font-size:16px; color:white; cursor:pointer; margin-right:5px;" data-title="測試一號" data-url="@Url.Action("Index","TestOne")" data-jsid="TestOne">測試一號</label></li>
+                    <li><label style="font-size:16px; color:white; cursor:pointer; margin-right:5px;" data-title="首頁" data-url="@Url.Action("Index","Home")" data-functionid="Home">首頁</label></li>
+                    <li><label style="font-size:16px; color:white; cursor:pointer; margin-right:5px;" data-title="測試一號" data-url="@Url.Action("Index","TestOne")" data-functionid="TestOne">測試一號</label></li>
                     @*<li>@Html.ActionLink("首頁","Index","Home")</li>*@
                 </ul>
             </div>
@@ -33,6 +33,7 @@
         @RenderBody()
 
         <footer>
+            <button type="button" id="JsTest">Test</button>
             <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
         </footer>
     </div>

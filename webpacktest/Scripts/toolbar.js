@@ -1,7 +1,7 @@
-﻿function ChangeState(action, status) {
+﻿function ChangeState(action, status, userState) {
     let btn = $('#functiontab_panel .active #toolbar #' + action);
 
-    if (action != null && $('#toolbar #Add').data('userstate') != 'True') {
+    if (action != null && userState == false || userState == null) {
         if (status == 'True' || status == 'true' || status == true) {
             btn.attr('disabled', true);
         }

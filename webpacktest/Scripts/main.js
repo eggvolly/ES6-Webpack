@@ -4,27 +4,43 @@ var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', f
 
 $('.navbar-nav li label').on('click', function (event) {
     $(this).attr('disabled', true);
-    GetFunctionPanel(this);
+    const url = $(this).data('url');
+    const functionId = $(this).data('functionid');
+    Open('NewTab', this);
+    //GetFunctionPanel(this);
     $(this).attr('disabled', false);
 });
+
+//$('#JsTest').on('click', function () {
+//    Test().then(function () {
+//        console.log(mapJSClass.get('aa'));
+//    })
+//})
 
 
 $('#CloseTab').on('click', RemoveFunctionTab);
 
 
 //關閉(刪除)功能頁籤
-function RemoveFunctionTab() {
-    let tab = $('#functiontab_panel .active');
-    const tabid = tab.attr('Id');
-    let tabBtn = $(`#functionbar_panel #${tabid}`);
-    SetFalseForMapStatus(tabid);
+function RemoveFunctionTab(id) {
+
+    if (typeof(id) != 'string') {
+        id = $('#functiontab_panel .active').attr('Id');
+    }
+
+    let tab = $(`#functiontab_panel #${id}`);
+    let tabBtn = $(`#functionbar_panel #${id}`);
+    SetFalseForMapStatus(id);
     tab.remove();
     tabBtn.remove();
-    let isOpen = SwitchFunctionTab();
-    if (!isOpen) {
-        $('#CloseTab').hide();
+
+    if ($(`#functiontab_panel .active`).length == 0) {
+        let isOpen = SwitchFunctionTab()
+        if (!isOpen) {
+            $('#CloseTab').hide();
+        }
     }
-};
+}
 
 
 //切換已存在的功能頁籤
@@ -42,14 +58,45 @@ function SwitchFunctionTab() {
 };
 
 
+//開啟新連結
+export function Open(type, e) {
+    switch (type) {
+        case 'NewPage':
+            OpenNewPage(e);
+            break;
+        case 'Reload':
+            ReloadPage(e);
+            break;
+        case 'NewTab':
+            GetFunctionPanel(e);
+            break;
+        default:
+            break;
+    }
+}
+
+
+function OpenNewPage(e) {
+    const url = e.data('url');
+    let newPage = window.open();
+    newPage.location = url;
+}
+
+
+function ReloadPage(e) {
+    const url = e.data('url');
+    window.location = url;
+}
+
+
 //開啟新的功能頁籤
 function GetFunctionPanel(e) {
 
     const url = $(e).data('url');
     const title = $(e).data('title');
-    const jsId = $(e).data('jsid');
+    const functionId = $(e).data('functionid');
 
-    OpenNewTab(url, title, jsId);
+    OpenNewTab(url, title, functionId);
 };
 
 
@@ -65,6 +112,7 @@ function OpenNewTab(url, title, jsId) {
     $.ajax({
         type: 'get',
         url: url,
+        async: false,
         success: function (result) {
             // 1. 載入頁面，設定class為active
             HideFunctionTab();
@@ -75,22 +123,33 @@ function OpenNewTab(url, title, jsId) {
             tabpanel.innerHTML = result;
             document.getElementById('functiontab_panel').appendChild(tabpanel);
 
-            var tabBtn = document.createElement('button');
+            var barDiv = document.createElement('div');
+            barDiv.id = tabId;
+            barDiv.className = 'btn btn-default active';
+
+            var tabBtn = document.createElement('label');
             tabBtn.textContent = title;
-            tabBtn.className = 'btn btn-default active';
-            tabBtn.id = tabId;
             tabBtn.addEventListener('click', function () {
                 SwitchTab(tabId);
             });
-            document.getElementById('functionbar_panel').appendChild(tabBtn);
+            var closeBtn = document.createElement('button');
+            closeBtn.innerText = "X";
+            closeBtn.className = 'close'
+            closeBtn.addEventListener('click', function () {
+                RemoveFunctionTab(tabId);
+            });
 
-            $('#CloseTab').show();          
+            barDiv.appendChild(tabBtn);
+            barDiv.appendChild(closeBtn);
+            document.getElementById('functionbar_panel').appendChild(barDiv);
+
+            $('#CloseTab').show();
 
             // 2. 載入JS，並做起始化及功能綁定
             GetJsClass(tabId, jsId).then(function () {
                 let tmp = mapJSClass.get(tabId);
                 tmp.Initialize(tmp);
-                tmp.BindEvent(tabId, tmp, OpenNewTab);
+                tmp.BindEvent(tabId, tmp);
                 if ($(`#functiontab_panel #${tabId} #toolbar`).length > 0) {
                     const toolbarMap = GetToolBarStatus(jsId);
                     tmp.InitialToolBar(tmp, toolbarMap);
@@ -120,9 +179,9 @@ function GetToolBarStatus(id) {
         success: function (result) {
             let obj = JSON.parse(result)
             for (let k of Object.keys(obj)) {
-                strMap.set(k, obj[k]);
+                strMap.set(k.replace('Disable', ''), obj[k]);
             }
-            
+
         },
         error: function () {
             alert("Error");
@@ -137,7 +196,7 @@ function HideFunctionTab() {
     $('#functiontab_panel > div').each(function () {
         $(this).removeClass('active');
     });
-    $('#functionbar_panel > button').each(function () {
+    $('#functionbar_panel > div').each(function () {
         $(this).removeClass('active');
     })
 }
@@ -160,6 +219,20 @@ function FindUnuseTab() {
 
     return tabName;
 }
+
+//function Test() {
+//    let a = './home';
+//    const promise = new Promise(function (resolve, reject) {
+//        require.ensure([], function () {
+//            tmpJS = require(a).default;
+//            getjs = new tmpJS();
+//            mapJSClass.set('aa', getjs);
+
+//            resolve();
+//        });
+//    });
+//    return promise;
+//}
 
 
 //取得JS並更新mapJSClass
@@ -188,6 +261,12 @@ function GetJsClass(tabId, jsName) {
                 });
                 break;
             default:
+                require.ensure([], function () {
+                    tmpJS = require('./AAA').default;
+
+
+                    resolve();
+                });
                 break;
         }
 
@@ -223,6 +302,3 @@ function SetFalseForMapStatus(key) {
     mapTabStatus.delete(key);
     mapTabStatus.set(key, false);
 }
-
-
-export { OpenNewTab };
