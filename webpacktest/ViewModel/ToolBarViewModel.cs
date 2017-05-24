@@ -9,11 +9,11 @@ namespace webpacktest.ViewModel
     {
         public string ControllerName { get; set; }
 
-        public bool? DisSearch { get; set; }
-        public bool? DisNew { get; set; }
-        public bool? DisDelete { get; set; }
-        public bool? DisCheck { get; set; }
-        public bool? DisFailed { get; set; }
-        public bool? DisAttach { get; set; }
+        public bool? DisableSearch { get; set; }
+        public bool? DisableNew { get; set; }
+        public bool? DisableDelete { get; set; }
+        public bool? DisableCheck { get; set; }
+        public bool? DisableFailed { get; set; }
+        public bool? DisableAttach { get; set; }
     }
 }

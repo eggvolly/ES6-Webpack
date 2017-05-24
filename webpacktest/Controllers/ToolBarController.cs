@@ -43,32 +43,32 @@ namespace webpacktest.Controllers
             ToolBarViewModel model = new ToolBarViewModel();
             if (controllerName == "Home")
             {
-                model.DisNew = false;
-                model.DisFailed = false;
-                model.DisDelete = false;
-                model.DisCheck = false;
-                model.DisAttach = false;
-                model.DisSearch = false;
+                model.DisableNew = false;
+                model.DisableFailed = false;
+                model.DisableDelete = false;
+                model.DisableCheck = false;
+                model.DisableAttach = false;
+                model.DisableSearch = false;
             }
 
             else if (controllerName == "TestOne")
             {
-                model.DisNew = false;
-                model.DisFailed = false;
-                model.DisDelete = false;
-                model.DisCheck = false;
-                model.DisAttach = true;
-                model.DisSearch = false;
+                model.DisableNew = false;
+                model.DisableFailed = false;
+                model.DisableDelete = false;
+                model.DisableCheck = false;
+                model.DisableAttach = true;
+                model.DisableSearch = false;
             }
 
             else
             {
-                model.DisNew = false;
-                model.DisFailed = false;
-                model.DisDelete = false;
-                model.DisCheck = false;
-                model.DisAttach = false;
-                model.DisSearch = false;
+                model.DisableNew = false;
+                model.DisableFailed = false;
+                model.DisableDelete = false;
+                model.DisableCheck = false;
+                model.DisableAttach = false;
+                model.DisableSearch = false;
             }
 
             model.ControllerName = controllerName;

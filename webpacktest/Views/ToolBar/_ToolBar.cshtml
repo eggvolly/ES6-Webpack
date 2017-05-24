@@ -4,22 +4,22 @@
     <nav>
         <ul class="list-inline">
             <li style="padding:0px">
-                <button class="btn btn-warning" id="Search" disabled="@(Model.DisSearch ?? false)" data-userstate="@(Model.DisSearch ?? false)" data-url="@Url.Action("Search",Model.ControllerName)" data-display="searchpanel">查詢</button>
+                <button class="btn btn-warning" id="Search" disabled="@(Model.DisableSearch ?? false)" data-userstate="@(Model.DisableSearch ?? false)" data-url="@Url.Action("Search",Model.ControllerName)" data-display="searchpanel">查詢</button>
             </li><!--
             --><li style="padding:0px">
-                <button class="btn btn-danger" id="Add" disabled="@(Model.DisNew ?? false)" data-userstate="@(Model.DisNew ?? false)" data-url="@Url.Action("Add",Model.ControllerName)" data-display="display">新增</button>
+                <button class="btn btn-danger" id="Add" disabled="@(Model.DisableNew ?? false)" data-userstate="@(Model.DisableNew ?? false)" data-url="@Url.Action("Add",Model.ControllerName)" data-display="display">新增</button>
             </li><!--
             --><li style="padding:0px">
-                <button class="btn btn-default" id="Check" disabled="@(Model.DisCheck ?? false)" data-userstate="@(Model.DisCheck ?? false)">確認</button>
+                <button class="btn btn-default" id="Check" disabled="@(Model.DisableCheck ?? false)" data-userstate="@(Model.DisableCheck ?? false)">確認</button>
             </li><!--
             --><li style="padding:0px">
-                <button class="btn btn-info" id="Delete" disabled="@(Model.DisDelete ?? false)" data-userstate="@(Model.DisDelete ?? false)" data-url="@Url.Action("Delete",Model.ControllerName)">刪除</button>
+                <button class="btn btn-info" id="Delete" disabled="@(Model.DisableDelete ?? false)" data-userstate="@(Model.DisableDelete ?? false)" data-url="@Url.Action("Delete",Model.ControllerName)">刪除</button>
             </li><!--
             --><li style="padding:0px">
-                <button class="btn btn-success" id="Failed" disabled="@(Model.DisFailed ?? false)" data-userstate="@(Model.DisFailed ?? false)">作廢</button>
+                <button class="btn btn-success" id="Failed" disabled="@(Model.DisableFailed ?? false)" data-userstate="@(Model.DisableFailed ?? false)">作廢</button>
             </li><!--
             --><li style="padding:0px">
-                <button class="btn btn-primary" id="Attachment" disabled="@(Model.DisAttach ?? false)" onclick="AttachmentFunct()" data-userstate="@(Model.DisAttach ?? false)">附件</button>
+                <button class="btn btn-primary" id="Attachment" disabled="@(Model.DisableAttach ?? false)" onclick="AttachmentFunct()" data-userstate="@(Model.DisableAttach ?? false)">附件</button>
             </li>
         </ul>
     </nav>
