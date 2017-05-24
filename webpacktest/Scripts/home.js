@@ -3,12 +3,15 @@
 class Home {
     constructor() {
         this.model = new Map();
-        this.searchUrl = '/Home/Search';
-        this.saveUrl = '/Home/Save';
-        this.deleteUrl = '/Home/Delete';
     };
 
-    Initialize() {
+    Initialize(self) {
+        let urlMap = new Map();
+        urlMap.set('search', '/Home/Search');
+        urlMap.set('save', '/Home/Save');
+        urlMap.set('delete', '/Home/Delete');
+
+        self.model.set('url', urlMap);
     };
 
     BindEvent(id, self, opentab) {
@@ -36,6 +39,18 @@ class Home {
         })
     };
 
+    InitialToolBar(self, actionmap) {
+        
+        for (let item of actionmap) {
+            const action = item[0].replace('Disable', '');
+            if (item[1] == false) {
+                toolbar.ChangeState(action, false);
+            }
+        }
+
+        self.model.set("toolbar", actionmap);
+    };
+
 };
 
 function AddData(id, self) {
@@ -50,11 +65,14 @@ function AddData(id, self) {
 
 function GetList(id, self) {
 
+    let urls = self.model.get('url');
+    const url = urls.get('search');
+
     $.ajax({
         type: 'get',
-        url: self.searchUrl,
+        url: url,
         success: function (result) {
-            $(`#innercontent #${id}`).html(result);
+            $(`#functiontab_panel #${id}`).html(result);
         },
         error: function () {
             alert("System Error");
@@ -64,6 +82,9 @@ function GetList(id, self) {
 
 
 function SaveData(self) {
+    let urls = self.model.get('url');
+    const url = urls.get('save');
+
     for (let item of self.model.entries()) {
         if (item[0] == 'Add') {
             const name = item[1].name;
@@ -75,7 +96,7 @@ function SaveData(self) {
                     name: name,
                     phone: phone
                 },
-                url: self.saveUrl,
+                url: url,
                 success: function () {
                     alert("success");
                     toolbar.ChangeState('Add', false);
@@ -90,9 +111,13 @@ function SaveData(self) {
 
 
 function DeleteFunction(id, self) {
+
+    let urls = self.model.get('url');
+    const url = urls.get('delete');
+
     $.ajax({
         type: 'get',
-        url: self.deleteUrl,
+        url: url,
         success: function (result) {
             let panel = $(`#${id} #myModal #searchpanel`);
             panel.html(result);

@@ -16,20 +16,20 @@ namespace webpacktest.Controllers
         }
 
         // GET: ToolBar
-        public ActionResult ToolBar(string controllerName)
+        public ActionResult ToolBar()
         {
-            if (String.IsNullOrEmpty(controllerName))
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //if (String.IsNullOrEmpty(controllerName))
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
 
             //取得該功能能開啟的ToolBar功能
-            ToolBarViewModel viewModel = GetFunctionStatus(controllerName);
+            //ToolBarViewModel viewModel = GetFunctionStatus(controllerName);
 
             //TODO: 登入身分檢核
 
-            return PartialView("_ToolBar", viewModel);
+            return PartialView("_ToolBar");
         }
 
 
@@ -43,7 +43,7 @@ namespace webpacktest.Controllers
             ToolBarViewModel model = new ToolBarViewModel();
             if (controllerName == "Home")
             {
-                model.DisableNew = false;
+                model.DisableAdd = false;
                 model.DisableFailed = false;
                 model.DisableDelete = false;
                 model.DisableCheck = false;
@@ -53,7 +53,7 @@ namespace webpacktest.Controllers
 
             else if (controllerName == "TestOne")
             {
-                model.DisableNew = false;
+                model.DisableAdd = false;
                 model.DisableFailed = false;
                 model.DisableDelete = false;
                 model.DisableCheck = false;
@@ -63,7 +63,7 @@ namespace webpacktest.Controllers
 
             else
             {
-                model.DisableNew = false;
+                model.DisableAdd = false;
                 model.DisableFailed = false;
                 model.DisableDelete = false;
                 model.DisableCheck = false;
@@ -71,7 +71,6 @@ namespace webpacktest.Controllers
                 model.DisableSearch = false;
             }
 
-            model.ControllerName = controllerName;
             return model;
         }
     }

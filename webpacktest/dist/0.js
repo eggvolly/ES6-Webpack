@@ -12,12 +12,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 class Home {
     constructor() {
         this.model = new Map();
-        this.searchUrl = '/Home/Search';
-        this.saveUrl = '/Home/Save';
-        this.deleteUrl = '/Home/Delete';
     };
 
-    Initialize() {
+    Initialize(self) {
+        let urlMap = new Map();
+        urlMap.set('search', '/Home/Search');
+        urlMap.set('save', '/Home/Save');
+        urlMap.set('delete', '/Home/Delete');
+
+        self.model.set('url', urlMap);
     };
 
     BindEvent(id, self, opentab) {
@@ -45,6 +48,18 @@ class Home {
         })
     };
 
+    InitialToolBar(self, actionmap) {
+        
+        for (let item of actionmap) {
+            const action = item[0].replace('Disable', '');
+            if (item[1] == false) {
+                __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */](action, false);
+            }
+        }
+
+        self.model.set("toolbar", actionmap);
+    };
+
 };
 
 function AddData(id, self) {
@@ -59,11 +74,14 @@ function AddData(id, self) {
 
 function GetList(id, self) {
 
+    let urls = self.model.get('url');
+    const url = urls.get('search');
+
     $.ajax({
         type: 'get',
-        url: self.searchUrl,
+        url: url,
         success: function (result) {
-            $(`#innercontent #${id}`).html(result);
+            $(`#functiontab_panel #${id}`).html(result);
         },
         error: function () {
             alert("System Error");
@@ -73,6 +91,9 @@ function GetList(id, self) {
 
 
 function SaveData(self) {
+    let urls = self.model.get('url');
+    const url = urls.get('save');
+
     for (let item of self.model.entries()) {
         if (item[0] == 'Add') {
             const name = item[1].name;
@@ -84,7 +105,7 @@ function SaveData(self) {
                     name: name,
                     phone: phone
                 },
-                url: self.saveUrl,
+                url: url,
                 success: function () {
                     alert("success");
                     __WEBPACK_IMPORTED_MODULE_0__toolbar__["a" /* ChangeState */]('Add', false);
@@ -99,9 +120,13 @@ function SaveData(self) {
 
 
 function DeleteFunction(id, self) {
+
+    let urls = self.model.get('url');
+    const url = urls.get('delete');
+
     $.ajax({
         type: 'get',
-        url: self.deleteUrl,
+        url: url,
         success: function (result) {
             let panel = $(`#${id} #myModal #searchpanel`);
             panel.html(result);
@@ -137,7 +162,7 @@ class HomeData {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChangeState; });
 ﻿function ChangeState(action, status) {
-    let btn = $('#innercontent .active #toolbar #' + action);
+    let btn = $('#functiontab_panel .active #toolbar #' + action);
 
     if (action != null && $('#toolbar #Add').data('userstate') != 'True') {
         if (status == 'True' || status == 'true' || status == true) {

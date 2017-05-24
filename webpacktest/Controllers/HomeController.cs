@@ -55,5 +55,21 @@ namespace webpacktest.Controllers
         {
             return PartialView("_Delete");
         }
+
+        public ActionResult GetToolBarStatus()
+        {
+            ToolBarViewModel model = new ToolBarViewModel()
+            {
+                DisableAttach = true,
+                DisableCheck = false,
+                DisableDelete = false,
+                DisableFailed = false,
+                DisableAdd = false,
+                DisableSearch = false
+            };
+
+            System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            return Json(objSerializer.Serialize(model));
+        }
     }
 }

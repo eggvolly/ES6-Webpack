@@ -149,8 +149,11 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OpenNewTab", function() { return OpenNewTab; });
 ﻿var mapJSClass = new Map();
 var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
 
@@ -167,9 +170,9 @@ $('#CloseTab').on('click', RemoveFunctionTab);
 
 //關閉(刪除)功能頁籤
 function RemoveFunctionTab() {
-    let tab = $('#innercontent .active');
+    let tab = $('#functiontab_panel .active');
     const tabid = tab.attr('Id');
-    let tabBtn = $(`#functiontab_panel #${tabid}`);
+    let tabBtn = $(`#functionbar_panel #${tabid}`);
     SetFalseForMapStatus(tabid);
     tab.remove();
     tabBtn.remove();
@@ -182,12 +185,12 @@ function RemoveFunctionTab() {
 
 //切換已存在的功能頁籤
 function SwitchFunctionTab() {
-    let tab = $('#innercontent div').first();
+    let tab = $('#functiontab_panel div').first();
 
     if (tab.length > 0) {
         let id = tab.attr('Id');
         tab.addClass('active');
-        $(`#functiontab_panel #${id}`).addClass('active');
+        $(`#functionbar_panel #${id}`).addClass('active');
         return true;
     }
 
@@ -226,7 +229,7 @@ function OpenNewTab(url, title, jsId) {
             tabpanel.id = tabId;
             tabpanel.className = 'active';
             tabpanel.innerHTML = result;
-            document.getElementById('innercontent').appendChild(tabpanel);
+            document.getElementById('functiontab_panel').appendChild(tabpanel);
 
             var tabBtn = document.createElement('button');
             tabBtn.textContent = title;
@@ -235,15 +238,19 @@ function OpenNewTab(url, title, jsId) {
             tabBtn.addEventListener('click', function () {
                 SwitchTab(tabId);
             });
-            document.getElementById('functiontab_panel').appendChild(tabBtn);
+            document.getElementById('functionbar_panel').appendChild(tabBtn);
 
-            $('#CloseTab').show();
+            $('#CloseTab').show();          
 
             // 2. 載入JS，並做起始化及功能綁定
             GetJsClass(tabId, jsId).then(function () {
                 let tmp = mapJSClass.get(tabId);
-                tmp.Initialize();
+                tmp.Initialize(tmp);
                 tmp.BindEvent(tabId, tmp, OpenNewTab);
+                if ($(`#functiontab_panel #${tabId} #toolbar`).length > 0) {
+                    const toolbarMap = GetToolBarStatus(jsId);
+                    tmp.InitialToolBar(tmp, toolbarMap);
+                }
 
                 // 3. mapTabStatus調整
                 SetTrueForMapStatus(tabId);
@@ -256,12 +263,37 @@ function OpenNewTab(url, title, jsId) {
 }
 
 
+function GetToolBarStatus(id) {
+    if (id == null) {
+        return;
+    }
+
+    let strMap = new Map();
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: `/${id}/GetToolBarStatus`,
+        success: function (result) {
+            let obj = JSON.parse(result)
+            for (let k of Object.keys(obj)) {
+                strMap.set(k, obj[k]);
+            }
+            
+        },
+        error: function () {
+            alert("Error");
+        }
+    })
+    return strMap;
+}
+
+
 //隱藏全部功能頁籤
 function HideFunctionTab() {
-    $('#innercontent > div').each(function () {
+    $('#functiontab_panel > div').each(function () {
         $(this).removeClass('active');
     });
-    $('#functiontab_panel > button').each(function () {
+    $('#functionbar_panel > button').each(function () {
         $(this).removeClass('active');
     })
 }
@@ -322,10 +354,10 @@ function GetJsClass(tabId, jsName) {
 
 
 function SwitchTab(tabId) {
-    var tab = $(`#innercontent #${tabId}`);
+    var tab = $(`#functiontab_panel #${tabId}`);
     HideFunctionTab();
     tab.addClass('active');
-    var tabBtn = $(`#functiontab_panel #${tabId}`);
+    var tabBtn = $(`#functionbar_panel #${tabId}`);
     tabBtn.addClass('active');
 };
 
@@ -347,6 +379,9 @@ function SetFalseForMapStatus(key) {
     mapTabStatus.delete(key);
     mapTabStatus.set(key, false);
 }
+
+
+
 
 /***/ }),
 /* 1 */

@@ -1,5 +1,5 @@
 ﻿function ChangeState(action, status) {
-    let btn = $('#innercontent .active #toolbar #' + action);
+    let btn = $('#functiontab_panel .active #toolbar #' + action);
 
     if (action != null && $('#toolbar #Add').data('userstate') != 'True') {
         if (status == 'True' || status == 'true' || status == true) {
