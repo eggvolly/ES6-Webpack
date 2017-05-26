@@ -1,5 +1,5 @@
 ﻿console.log("AAA");
 
-function PrintLog() {
+export function PrintLog() {
     console.log("Print AAA");
 }

@@ -44,7 +44,7 @@ class Home {
 
         $(`#${id} #addtab`).on('click', function () {
             $(this).attr('disabled', true);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__main__["Open"])('NewTab', $(this));
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__main__["OpenUrl"])('NewTab', $(this));
             $(this).attr('disabled', false);
         })
     };

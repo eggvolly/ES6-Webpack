@@ -21,7 +21,7 @@ class TestOne {
         $(`#${id} #test`).on('click', ClickFunct);
 
         $(`#${id} #open`).on('click', function () {
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__main__["Open"])('NewPage', $(this));
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__main__["OpenUrl"])('NewPage', $(this));
         })
     };
 }

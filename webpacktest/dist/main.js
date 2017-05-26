@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		3: 0
+/******/ 		2: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -144,7 +144,7 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -153,8 +153,11 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (immutable) */ __webpack_exports__["Open"] = Open;
-﻿var mapJSClass = new Map();
+/* harmony export (immutable) */ __webpack_exports__["OpenUrl"] = OpenUrl;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scriptsentry__ = __webpack_require__(1);
+﻿
+
+var mapJSClass = new Map();
 var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
 
 
@@ -162,17 +165,10 @@ $('.navbar-nav li label').on('click', function (event) {
     $(this).attr('disabled', true);
     const url = $(this).data('url');
     const functionId = $(this).data('functionid');
-    Open('NewTab', this);
+    OpenUrl('NewTab', this);
     //GetFunctionPanel(this);
     $(this).attr('disabled', false);
 });
-
-//$('#JsTest').on('click', function () {
-//    Test().then(function () {
-//        console.log(mapJSClass.get('aa'));
-//    })
-//})
-
 
 $('#CloseTab').on('click', RemoveFunctionTab);
 
@@ -180,12 +176,13 @@ $('#CloseTab').on('click', RemoveFunctionTab);
 //關閉(刪除)功能頁籤
 function RemoveFunctionTab(id) {
 
-    if (typeof(id) != 'string') {
+    if (typeof (id) != 'string') {
         id = $('#functiontab_panel .active').attr('Id');
     }
 
     let tab = $(`#functiontab_panel #${id}`);
     let tabBtn = $(`#functionbar_panel #${id}`);
+    mapJSClass.delete(id);
     SetFalseForMapStatus(id);
     tab.remove();
     tabBtn.remove();
@@ -201,8 +198,7 @@ function RemoveFunctionTab(id) {
 
 //切換已存在的功能頁籤
 function SwitchFunctionTab() {
-    let tab = $('#functiontab_panel div').first();
-
+    let tab = $('#functiontab_panel > div').last();
     if (tab.length > 0) {
         let id = tab.attr('Id');
         tab.addClass('active');
@@ -215,7 +211,7 @@ function SwitchFunctionTab() {
 
 
 //開啟新連結
-function Open(type, e) {
+function OpenUrl(type, e) {
     switch (type) {
         case 'NewPage':
             OpenNewPage(e);
@@ -257,7 +253,7 @@ function GetFunctionPanel(e) {
 
 
 //開啟新的功能頁籤
-function OpenNewTab(url, title, jsId) {
+function OpenNewTab(url, title, functionId) {
     const tabId = FindUnuseTab();
 
     if (tabId == '') {
@@ -302,12 +298,12 @@ function OpenNewTab(url, title, jsId) {
             $('#CloseTab').show();
 
             // 2. 載入JS，並做起始化及功能綁定
-            GetJsClass(tabId, jsId).then(function () {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__scriptsentry__["a" /* GetClass */])(tabId, functionId, mapJSClass).then(function () {
                 let tmp = mapJSClass.get(tabId);
                 tmp.Initialize(tmp);
                 tmp.BindEvent(tabId, tmp);
                 if ($(`#functiontab_panel #${tabId} #toolbar`).length > 0) {
-                    const toolbarMap = GetToolBarStatus(jsId);
+                    const toolbarMap = GetToolBarStatus(functionId);
                     tmp.InitialToolBar(tmp, toolbarMap);
                 }
 
@@ -376,61 +372,6 @@ function FindUnuseTab() {
     return tabName;
 }
 
-//function Test() {
-//    let a = './home';
-//    const promise = new Promise(function (resolve, reject) {
-//        require.ensure([], function () {
-//            tmpJS = require(a).default;
-//            getjs = new tmpJS();
-//            mapJSClass.set('aa', getjs);
-
-//            resolve();
-//        });
-//    });
-//    return promise;
-//}
-
-
-//取得JS並更新mapJSClass
-function GetJsClass(tabId, jsName) {
-    const promise = new Promise(function (resolve, reject) {
-        let tmpJS;
-        let getjs;
-
-        switch (jsName) {
-            case 'Home':
-                __webpack_require__.e/* require.ensure */(0).then((function () {
-                    tmpJS = __webpack_require__(3).default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-                break;
-            case 'TestOne':
-                __webpack_require__.e/* require.ensure */(1).then((function () {
-                    tmpJS = __webpack_require__(4).default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-                break;
-            default:
-                __webpack_require__.e/* require.ensure */(2).then((function () {
-                    tmpJS = __webpack_require__(2).default;
-
-
-                    resolve();
-                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-                break;
-        }
-
-    });
-
-    return promise;
-}
-
 
 function SwitchTab(tabId) {
     var tab = $(`#functiontab_panel #${tabId}`);
@@ -462,6 +403,47 @@ function SetFalseForMapStatus(key) {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GetClass; });
+﻿function GetClass(tabId, jsName, mapJSClass) {
+    const promise = new Promise(function (resolve, reject) {
+        let tmpJS;
+        let getjs;
+
+        switch (jsName) {
+            case 'Home':
+                __webpack_require__.e/* require.ensure */(0).then((function () {
+                    tmpJS = __webpack_require__(3).default;
+                    getjs = new tmpJS();
+                    mapJSClass.set(tabId, getjs);
+
+                    resolve();
+                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+                break;
+            case 'TestOne':
+                __webpack_require__.e/* require.ensure */(1).then((function () {
+                    tmpJS = __webpack_require__(4).default;
+                    getjs = new tmpJS();
+                    mapJSClass.set(tabId, getjs);
+
+                    resolve();
+                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+                break;
+            default:
+                break;
+        }
+
+    });
+
+    return promise;
+}
+
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(0);

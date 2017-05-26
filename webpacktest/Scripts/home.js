@@ -1,5 +1,5 @@
 ﻿import * as toolbar from './toolbar'
-import { Open } from './main'
+import { OpenUrl } from './main'
 
 class Home {
     constructor() {
@@ -35,7 +35,7 @@ class Home {
 
         $(`#${id} #addtab`).on('click', function () {
             $(this).attr('disabled', true);
-            Open('NewTab', $(this));
+            OpenUrl('NewTab', $(this));
             $(this).attr('disabled', false);
         })
     };

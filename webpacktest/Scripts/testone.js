@@ -1,4 +1,4 @@
-﻿import { Open } from './main'
+﻿import { OpenUrl } from './main'
 
 export default class TestOne {
     constructor() {
@@ -13,7 +13,7 @@ export default class TestOne {
         $(`#${id} #test`).on('click', ClickFunct);
 
         $(`#${id} #open`).on('click', function () {
-            Open('NewPage', $(this));
+            OpenUrl('NewPage', $(this));
         })
     };
 };

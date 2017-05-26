@@ -1,4 +1,6 @@
-﻿var mapJSClass = new Map();
+﻿import { GetClass } from './scriptsentry';
+
+var mapJSClass = new Map();
 var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
 
 
@@ -6,17 +8,10 @@ $('.navbar-nav li label').on('click', function (event) {
     $(this).attr('disabled', true);
     const url = $(this).data('url');
     const functionId = $(this).data('functionid');
-    Open('NewTab', this);
+    OpenUrl('NewTab', this);
     //GetFunctionPanel(this);
     $(this).attr('disabled', false);
 });
-
-//$('#JsTest').on('click', function () {
-//    Test().then(function () {
-//        console.log(mapJSClass.get('aa'));
-//    })
-//})
-
 
 $('#CloseTab').on('click', RemoveFunctionTab);
 
@@ -24,12 +19,13 @@ $('#CloseTab').on('click', RemoveFunctionTab);
 //關閉(刪除)功能頁籤
 function RemoveFunctionTab(id) {
 
-    if (typeof(id) != 'string') {
+    if (typeof (id) != 'string') {
         id = $('#functiontab_panel .active').attr('Id');
     }
 
     let tab = $(`#functiontab_panel #${id}`);
     let tabBtn = $(`#functionbar_panel #${id}`);
+    mapJSClass.delete(id);
     SetFalseForMapStatus(id);
     tab.remove();
     tabBtn.remove();
@@ -45,8 +41,7 @@ function RemoveFunctionTab(id) {
 
 //切換已存在的功能頁籤
 function SwitchFunctionTab() {
-    let tab = $('#functiontab_panel div').first();
-
+    let tab = $('#functiontab_panel > div').last();
     if (tab.length > 0) {
         let id = tab.attr('Id');
         tab.addClass('active');
@@ -59,7 +54,7 @@ function SwitchFunctionTab() {
 
 
 //開啟新連結
-export function Open(type, e) {
+export function OpenUrl(type, e) {
     switch (type) {
         case 'NewPage':
             OpenNewPage(e);
@@ -101,7 +96,7 @@ function GetFunctionPanel(e) {
 
 
 //開啟新的功能頁籤
-function OpenNewTab(url, title, jsId) {
+function OpenNewTab(url, title, functionId) {
     const tabId = FindUnuseTab();
 
     if (tabId == '') {
@@ -146,12 +141,12 @@ function OpenNewTab(url, title, jsId) {
             $('#CloseTab').show();
 
             // 2. 載入JS，並做起始化及功能綁定
-            GetJsClass(tabId, jsId).then(function () {
+            GetClass(tabId, functionId, mapJSClass).then(function () {
                 let tmp = mapJSClass.get(tabId);
                 tmp.Initialize(tmp);
                 tmp.BindEvent(tabId, tmp);
                 if ($(`#functiontab_panel #${tabId} #toolbar`).length > 0) {
-                    const toolbarMap = GetToolBarStatus(jsId);
+                    const toolbarMap = GetToolBarStatus(functionId);
                     tmp.InitialToolBar(tmp, toolbarMap);
                 }
 
@@ -218,61 +213,6 @@ function FindUnuseTab() {
     }
 
     return tabName;
-}
-
-//function Test() {
-//    let a = './home';
-//    const promise = new Promise(function (resolve, reject) {
-//        require.ensure([], function () {
-//            tmpJS = require(a).default;
-//            getjs = new tmpJS();
-//            mapJSClass.set('aa', getjs);
-
-//            resolve();
-//        });
-//    });
-//    return promise;
-//}
-
-
-//取得JS並更新mapJSClass
-function GetJsClass(tabId, jsName) {
-    const promise = new Promise(function (resolve, reject) {
-        let tmpJS;
-        let getjs;
-
-        switch (jsName) {
-            case 'Home':
-                require.ensure([], function () {
-                    tmpJS = require('./home').default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                });
-                break;
-            case 'TestOne':
-                require.ensure([], function () {
-                    tmpJS = require('./testone').default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                });
-                break;
-            default:
-                require.ensure([], function () {
-                    tmpJS = require('./AAA').default;
-
-
-                    resolve();
-                });
-                break;
-        }
-
-    });
-
-    return promise;
 }
 
 
