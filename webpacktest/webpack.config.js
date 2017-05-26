@@ -1,6 +1,10 @@
 ﻿"use strict"
 
 var path = require('path');
+var webpack = require('webpack');
+
+var commonsPlugin =
+    new webpack.optimize.CommonsChunkPlugin('common.js');
 
 module.exports = {
     entry: [
@@ -10,5 +14,6 @@ module.exports = {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: "/dist/"
-	}
+    },
+    plugins: [commonsPlugin]
 }
