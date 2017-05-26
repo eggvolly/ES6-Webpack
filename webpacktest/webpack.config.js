@@ -4,7 +4,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 var commonsPlugin =
-    new webpack.optimize.CommonsChunkPlugin('common.js');
+    new webpack.optimize.CommonsChunkPlugin('common');
 
 module.exports = {
     entry: [

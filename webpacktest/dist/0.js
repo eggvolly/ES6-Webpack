@@ -83,7 +83,7 @@ function GetList(id, self) {
         type: 'get',
         url: url,
         success: function (result) {
-            $(`#functiontab_panel #${id}`).html(result);
+            $(`#functiontab_panel #${id} #homecontent`).html(result);
         },
         error: function () {
             alert("System Error");

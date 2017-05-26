@@ -31,9 +31,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-
+        <br />
         <footer>
-            <button type="button" id="JsTest">Test</button>
             <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
         </footer>
     </div>
@@ -41,6 +40,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="../dist/common.js"></script>
     <script src="../dist/main.js"></script>
 
 </body>
