@@ -22,6 +22,15 @@
                     resolve();
                 });
                 break;
+            case 'TestTwo':
+                require.ensure([], function () {
+                    tmpJS = require('./testtwo').default;
+                    getjs = new tmpJS();
+                    mapJSClass.set(tabId, getjs);
+
+                    resolve();
+                });
+                break;
             default:
                 break;
         }

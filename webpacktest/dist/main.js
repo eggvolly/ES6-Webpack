@@ -1,4 +1,4 @@
-webpackJsonp([2],[
+webpackJsonp([3],[
 /* 0 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -265,7 +265,7 @@ function SetFalseForMapStatus(key) {
 
         switch (jsName) {
             case 'Home':
-                __webpack_require__.e/* require.ensure */(0).then((function () {
+                __webpack_require__.e/* require.ensure */(1).then((function () {
                     tmpJS = __webpack_require__(3).default;
                     getjs = new tmpJS();
                     mapJSClass.set(tabId, getjs);
@@ -274,8 +274,17 @@ function SetFalseForMapStatus(key) {
                 }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
                 break;
             case 'TestOne':
-                __webpack_require__.e/* require.ensure */(1).then((function () {
+                __webpack_require__.e/* require.ensure */(2).then((function () {
                     tmpJS = __webpack_require__(4).default;
+                    getjs = new tmpJS();
+                    mapJSClass.set(tabId, getjs);
+
+                    resolve();
+                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+                break;
+            case 'TestTwo':
+                __webpack_require__.e/* require.ensure */(0).then((function () {
+                    tmpJS = __webpack_require__(5).default;
                     getjs = new tmpJS();
                     mapJSClass.set(tabId, getjs);
 
