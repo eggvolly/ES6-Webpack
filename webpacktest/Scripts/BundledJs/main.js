@@ -8,7 +8,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scriptsentry__ = __webpack_require__(1);
 ﻿
 
-var mapJSClass = new Map();
+var modules = new Map();
+
+//id動態產生 active => id
 var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
 
 
@@ -17,15 +19,16 @@ $('.navbar-nav li label').on('click', function (event) {
     const url = $(this).data('url');
     const functionId = $(this).data('functionid');
     OpenUrl('NewTab', this);
-    //GetFunctionPanel(this);
     $(this).attr('disabled', false);
 });
 
-$('#CloseTab').on('click', RemoveFunctionTab);
+$('#CloseTab').on('click', RemoveContentTab);
 
 
+//Tab => Class
+//Rename : ContentTab
 //關閉(刪除)功能頁籤
-function RemoveFunctionTab(id) {
+function RemoveContentTab(id) {
 
     if (typeof (id) != 'string') {
         id = $('#functiontab_panel .active').attr('Id');
@@ -33,13 +36,13 @@ function RemoveFunctionTab(id) {
 
     let tab = $(`#functiontab_panel #${id}`);
     let tabBtn = $(`#functionbar_panel #${id}`);
-    mapJSClass.delete(id);
+    modules.delete(id);
     SetFalseForMapStatus(id);
     tab.remove();
     tabBtn.remove();
 
     if ($(`#functiontab_panel .active`).length == 0) {
-        let isOpen = SwitchFunctionTab()
+        let isOpen = SwitchContentTab()
         if (!isOpen) {
             $('#CloseTab').hide();
         }
@@ -48,7 +51,7 @@ function RemoveFunctionTab(id) {
 
 
 //切換已存在的功能頁籤
-function SwitchFunctionTab() {
+function SwitchContentTab() {
     let tab = $('#functiontab_panel > div').last();
     if (tab.length > 0) {
         let id = tab.attr('Id');
@@ -60,7 +63,7 @@ function SwitchFunctionTab() {
     return false;
 };
 
-
+// windows open 參數 既定名稱
 //開啟新連結
 function OpenUrl(type, e) {
     switch (type) {
@@ -71,7 +74,7 @@ function OpenUrl(type, e) {
             ReloadPage(e);
             break;
         case 'NewTab':
-            GetFunctionPanel(e);
+            CreateContentPanel(e);
             break;
         default:
             break;
@@ -92,19 +95,21 @@ function ReloadPage(e) {
 }
 
 
+//Rename ContentPanel
 //開啟新的功能頁籤
-function GetFunctionPanel(e) {
+function CreateContentPanel(e) {
 
     const url = $(e).data('url');
     const title = $(e).data('title');
     const functionId = $(e).data('functionid');
 
-    OpenNewTab(url, title, functionId);
+    CreateNewContentPanel(url, title, functionId);
 };
 
 
+// Rename Create
 //開啟新的功能頁籤
-function OpenNewTab(url, title, functionId) {
+function CreateNewContentPanel(url, title, functionId) {
     const tabId = FindUnuseTab();
 
     if (tabId == '') {
@@ -118,7 +123,7 @@ function OpenNewTab(url, title, functionId) {
         async: false,
         success: function (result) {
             // 1. 載入頁面，設定class為active
-            HideFunctionTab();
+            HideContentTab();
 
             var tabpanel = document.createElement('div');
             tabpanel.id = tabId;
@@ -136,10 +141,11 @@ function OpenNewTab(url, title, functionId) {
                 SwitchTab(tabId);
             });
             var closeBtn = document.createElement('button');
-            closeBtn.innerText = "X";
-            closeBtn.className = 'close'
+            // Bootstrap
+            //closeBtn.innerText = "X";
+            closeBtn.className = 'close glyphicon glyphicon-remove'
             closeBtn.addEventListener('click', function () {
-                RemoveFunctionTab(tabId);
+                RemoveContentTab(tabId);
             });
 
             barDiv.appendChild(tabBtn);
@@ -149,8 +155,8 @@ function OpenNewTab(url, title, functionId) {
             $('#CloseTab').show();
 
             // 2. 載入JS，並做起始化及功能綁定
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__scriptsentry__["a" /* GetClass */])(tabId, functionId, mapJSClass).then(function () {
-                let tmp = mapJSClass.get(tabId);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__scriptsentry__["a" /* GetClass */])(tabId, functionId, modules).then(function () {
+                let tmp = modules.get(tabId);
                 tmp.Initialize(tmp);
                 tmp.BindEvent(tabId, tmp);
                 if ($(`#functiontab_panel #${tabId} #toolbar`).length > 0) {
@@ -169,8 +175,8 @@ function OpenNewTab(url, title, functionId) {
 }
 
 
-function GetToolBarStatus(id) {
-    if (id == null) {
+function GetToolBarStatus(functionid) {
+    if (functionid == null) {
         return;
     }
 
@@ -178,7 +184,7 @@ function GetToolBarStatus(id) {
     $.ajax({
         type: 'post',
         async: false,
-        url: `/${id}/GetToolBarStatus`,
+        url: `/${functionid}/GetToolBarStatus`,
         success: function (result) {
             let obj = JSON.parse(result)
             for (let k of Object.keys(obj)) {
@@ -195,7 +201,7 @@ function GetToolBarStatus(id) {
 
 
 //隱藏全部功能頁籤
-function HideFunctionTab() {
+function HideContentTab() {
     $('#functiontab_panel > div').each(function () {
         $(this).removeClass('active');
     });
@@ -226,7 +232,7 @@ function FindUnuseTab() {
 
 function SwitchTab(tabId) {
     var tab = $(`#functiontab_panel #${tabId}`);
-    HideFunctionTab();
+    HideContentTab();
     tab.addClass('active');
     var tabBtn = $(`#functionbar_panel #${tabId}`);
     tabBtn.addClass('active');

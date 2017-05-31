@@ -8,12 +8,12 @@ var commonsPlugin =
 
 module.exports = {
     entry: [
-        './Scripts/main.js'
+        './Scripts/OriginalJs/main.js'
         ],
 	output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: "/dist/"
+        path: path.resolve(__dirname, './Scripts/BundledJs'),
+        publicPath: "/Scripts/BundledJs/"
     },
     plugins: [commonsPlugin]
 }
