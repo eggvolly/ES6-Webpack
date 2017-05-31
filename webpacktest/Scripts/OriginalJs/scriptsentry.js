@@ -1,4 +1,4 @@
-﻿function GetClass(tabId, jsName, mapJSClass) {
+﻿function LoadJavaScript(tabId, jsName, mapJSClass) {
     const promise = new Promise(function (resolve, reject) {
         let tmpJS;
         let getjs;
@@ -40,4 +40,4 @@
     return promise;
 }
 
-export { GetClass };
+export { LoadJavaScript };

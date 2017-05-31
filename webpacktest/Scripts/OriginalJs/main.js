@@ -1,16 +1,14 @@
-﻿import { GetClass } from './scriptsentry';
+﻿import { LoadJavaScript } from './scriptsentry';
 
 var modules = new Map();
-
-//id動態產生 active => id
-var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
+var mapTabStatus = new Map();
 
 
 $('.navbar-nav li label').on('click', function (event) {
     $(this).attr('disabled', true);
     const url = $(this).data('url');
     const functionId = $(this).data('functionid');
-    OpenUrl('NewTab', this);
+    OpenUrl('_newtab', this);
     $(this).attr('disabled', false);
 });
 
@@ -18,7 +16,6 @@ $('#CloseTab').on('click', RemoveContentTab);
 
 
 //Tab => Class
-//Rename : ContentTab
 //關閉(刪除)功能頁籤
 function RemoveContentTab(id) {
 
@@ -57,15 +54,15 @@ function SwitchContentTab() {
 
 // windows open 參數 既定名稱
 //開啟新連結
-export function OpenUrl(type, e) {
-    switch (type) {
-        case 'NewPage':
+export function OpenUrl(target, e) {
+    switch (target) {
+        case '_blank':
             OpenNewPage(e);
             break;
-        case 'Reload':
+        case '_reload':
             ReloadPage(e);
             break;
-        case 'NewTab':
+        case '_newtab':
             CreateContentPanel(e);
             break;
         default:
@@ -87,7 +84,6 @@ function ReloadPage(e) {
 }
 
 
-//Rename ContentPanel
 //開啟新的功能頁籤
 function CreateContentPanel(e) {
 
@@ -99,7 +95,6 @@ function CreateContentPanel(e) {
 };
 
 
-// Rename Create
 //開啟新的功能頁籤
 function CreateNewContentPanel(url, title, functionId) {
     const tabId = FindUnuseTab();
@@ -133,8 +128,6 @@ function CreateNewContentPanel(url, title, functionId) {
                 SwitchTab(tabId);
             });
             var closeBtn = document.createElement('button');
-            // Bootstrap
-            //closeBtn.innerText = "X";
             closeBtn.className = 'close glyphicon glyphicon-remove'
             closeBtn.addEventListener('click', function () {
                 RemoveContentTab(tabId);
@@ -147,7 +140,7 @@ function CreateNewContentPanel(url, title, functionId) {
             $('#CloseTab').show();
 
             // 2. 載入JS，並做起始化及功能綁定
-            GetClass(tabId, functionId, modules).then(function () {
+            LoadJavaScript(tabId, functionId, modules).then(function () {
                 let tmp = modules.get(tabId);
                 tmp.Initialize(tmp);
                 tmp.BindEvent(tabId, tmp);
@@ -209,16 +202,26 @@ function FindUnuseTab() {
         return;
     }
 
-    let tabName = '';
-
-    for (let item of mapTabStatus.entries()) {
-        if (item[1] == false) {
-            tabName = item[0];
-            return tabName;
+    if (mapTabStatus.size == 5) {
+        let tabName = '';
+        for (let item of mapTabStatus.entries()) {
+            if (item[1] == false) {
+                tabName = item[0];
+                return tabName;
+            }
         }
-    }
 
-    return tabName;
+        return tabName;
+    }
+    else {
+        const tabName = 'tab' + Math.floor(Math.random() * 10000);
+        while (mapTabStatus.has(tabName)) {
+            tabName = 'tab' + Math.floor(Math.random() * 10000);
+        };
+
+        mapTabStatus.set(tabName, false);
+        return tabName;
+    }
 }
 
 

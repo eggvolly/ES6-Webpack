@@ -13,7 +13,7 @@ export default class TestOne {
         $(`#${id} #test`).on('click', ClickFunct);
 
         $(`#${id} #open`).on('click', function () {
-            OpenUrl('NewPage', $(this));
+            OpenUrl('_blank', $(this));
         })
     };
 };

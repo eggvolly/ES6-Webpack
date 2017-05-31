@@ -35,7 +35,7 @@ class Home {
 
         $(`#${id} #addtab`).on('click', function () {
             $(this).attr('disabled', true);
-            OpenUrl('NewTab', $(this));
+            OpenUrl('_newtab', $(this));
             $(this).attr('disabled', false);
         })
     };

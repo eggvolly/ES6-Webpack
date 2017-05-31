@@ -11,7 +11,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var modules = new Map();
 
 //id動態產生 active => id
-var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
+//var mapTabStatus = new Map().set('tab1', false).set('tab2', false).set('tab3', false).set('tab4', false).set('tab5', false);
+var mapTabStatus = new Map();
 
 
 $('.navbar-nav li label').on('click', function (event) {
@@ -141,8 +142,6 @@ function CreateNewContentPanel(url, title, functionId) {
                 SwitchTab(tabId);
             });
             var closeBtn = document.createElement('button');
-            // Bootstrap
-            //closeBtn.innerText = "X";
             closeBtn.className = 'close glyphicon glyphicon-remove'
             closeBtn.addEventListener('click', function () {
                 RemoveContentTab(tabId);
@@ -217,16 +216,26 @@ function FindUnuseTab() {
         return;
     }
 
-    let tabName = '';
-
-    for (let item of mapTabStatus.entries()) {
-        if (item[1] == false) {
-            tabName = item[0];
-            return tabName;
+    if (mapTabStatus.size == 5) {
+        let tabName = '';
+        for (let item of mapTabStatus.entries()) {
+            if (item[1] == false) {
+                tabName = item[0];
+                return tabName;
+            }
         }
-    }
 
-    return tabName;
+        return tabName;
+    }
+    else {
+        const tabName = 'tab' + Math.floor(Math.random() * 10000);
+        while (mapTabStatus.has(tabName)) {
+            tabName = 'tab' + Math.floor(Math.random() * 10000);
+        };
+
+        mapTabStatus.set(tabName, false);
+        return tabName;
+    }
 }
 
 
