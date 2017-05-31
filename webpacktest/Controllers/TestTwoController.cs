@@ -15,6 +15,30 @@ namespace webpacktest.Controllers
             return PartialView();
         }
 
+        public ActionResult Add()
+        {
+            return PartialView("_Add");
+        }
+
+        public ActionResult Search()
+        {
+            List<TestTwoDataViewModel> model = new List<TestTwoDataViewModel>();
+            model.Add(new TestTwoDataViewModel() { Name = "Bernice" });
+            model.Add(new TestTwoDataViewModel()
+            {
+                Name = "Morris"
+            });
+            
+            return PartialView("_Search", model);
+        }
+
+        public void Save(string name)
+        {
+            if(!String.IsNullOrEmpty(name))
+            {
+                return;
+            }
+        }
 
         public ActionResult GetToolBarStatus()
         {

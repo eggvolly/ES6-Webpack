@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\HomeDataViewModel.cs" />
+    <Compile Include="ViewModel\TestTwoDataViewModel.cs" />
     <Compile Include="ViewModel\ToolBarViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ajax-loader.gif" />
     <Content Include="Scripts\AAA.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -204,6 +206,8 @@
     <Content Include="Views\Home\_Delete.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\TestTwo\Index.cshtml" />
+    <Content Include="Views\TestTwo\_Add.cshtml" />
+    <Content Include="Views\TestTwo\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
