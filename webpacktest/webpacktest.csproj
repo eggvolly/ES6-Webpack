@@ -180,6 +180,7 @@
     <Content Include="Scripts\OriginalJs\home.js" />
     <Content Include="Scripts\OriginalJs\main.js" />
     <Content Include="Scripts\OriginalJs\scriptsentry.js" />
+    <Content Include="Scripts\OriginalJs\tabscript.js" />
     <Content Include="Scripts\OriginalJs\testone.js" />
     <Content Include="Scripts\OriginalJs\testtwo.js" />
     <Content Include="Scripts\OriginalJs\toolbar.js" />

@@ -1,131 +1,4 @@
-webpackJsonp([3],[
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (immutable) */ __webpack_exports__["OpenUrl"] = OpenUrl;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scriptsentry__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tabscript__ = __webpack_require__(2);
-﻿
-
-
-var modules = new Map();
-var mapTabStatus = new Map();
-
-
-$('.navbar-nav li label').on('click', function (event) {
-    $(this).attr('disabled', true);
-    const url = $(this).data('url');
-    const functionId = $(this).data('functionid');
-    OpenUrl('_newtab', this);
-    $(this).attr('disabled', false);
-});
-
-$('#CloseTab').on('click', __WEBPACK_IMPORTED_MODULE_1__tabscript__["a" /* RemoveContentTab */]);
-
-
-//開啟新連結
-function OpenUrl(target, e) {
-    switch (target) {
-        case '_blank':
-            OpenNewPage(e);
-            break;
-        case '_reload':
-            ReloadPage(e);
-            break;
-        case '_newtab':
-            CreateContentPanel(e);
-            break;
-        default:
-            break;
-    }
-}
-
-
-function OpenNewPage(e) {
-    const url = e.data('url');
-    let newPage = window.open();
-    newPage.location = url;
-}
-
-
-function ReloadPage(e) {
-    const url = e.data('url');
-    window.location = url;
-}
-
-
-//開啟新的功能頁籤
-function CreateContentPanel(e) {
-
-    const url = $(e).data('url');
-    const title = $(e).data('title');
-    const functionId = $(e).data('functionid');
-
-    __WEBPACK_IMPORTED_MODULE_1__tabscript__["b" /* CreateNewContentPanel */](url, title, functionId);
-};
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoadJavaScript; });
-﻿function LoadJavaScript(tabId, jsName, mapJSClass) {
-    const promise = new Promise(function (resolve, reject) {
-        let tmpJS;
-        let getjs;
-
-        switch (jsName) {
-            case 'Home':
-                __webpack_require__.e/* require.ensure */(1).then((function () {
-                    tmpJS = __webpack_require__(4).default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-                break;
-            case 'TestOne':
-                __webpack_require__.e/* require.ensure */(2).then((function () {
-                    tmpJS = __webpack_require__(5).default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-                break;
-            case 'TestTwo':
-                __webpack_require__.e/* require.ensure */(0).then((function () {
-                    tmpJS = __webpack_require__(6).default;
-                    getjs = new tmpJS();
-                    mapJSClass.set(tabId, getjs);
-
-                    resolve();
-                }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-                break;
-            default:
-                break;
-        }
-
-    });
-
-    return promise;
-}
-
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CreateNewContentPanel; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RemoveContentTab; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scriptsentry__ = __webpack_require__(1);
-﻿
+﻿import { LoadJavaScript } from './scriptsentry';
 
 var modules = new Map();
 var mapTabStatus = new Map();
@@ -213,7 +86,7 @@ function CreateNewContentPanel(url, title, functionId) {
             $('#CloseTab').show();
 
             // 2. 載入JS，並做起始化及功能綁定
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__scriptsentry__["a" /* LoadJavaScript */])(tabId, functionId, modules).then(function () {
+            LoadJavaScript(tabId, functionId, modules).then(function () {
                 let tmp = modules.get(tabId);
                 tmp.Initialize(tmp);
                 tmp.BindEvent(tabId, tmp);
@@ -325,14 +198,4 @@ function SetFalseForMapStatus(key) {
     mapTabStatus.set(key, false);
 }
 
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(0);
-
-
-/***/ })
-],[3]);
+export { CreateNewContentPanel, RemoveContentTab };

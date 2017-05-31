@@ -1,11 +1,11 @@
 webpackJsonp([1],{
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main__ = __webpack_require__(0);
 ﻿
 
@@ -44,7 +44,7 @@ class Home {
 
         $(`#${id} #addtab`).on('click', function () {
             $(this).attr('disabled', true);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__main__["OpenUrl"])('NewTab', $(this));
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__main__["OpenUrl"])('_newtab', $(this));
             $(this).attr('disabled', false);
         })
     };
@@ -159,7 +159,7 @@ class HomeData {
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
